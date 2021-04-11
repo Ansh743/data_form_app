@@ -9,7 +9,6 @@
             "name": "data_form_app",
             "request": "launch",
             "type": "dart",
-            "deviceId": "FA6AK0302212",
         }
     ]
 }

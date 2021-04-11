@@ -8,9 +8,8 @@ class FormPage extends StatefulWidget {
 }
 
 class FormPageState extends State<FormPage> {
-  int selectedValue = 1;
-  String _appName, _appSummary;
-  bool appReskinned;
+  String _appName, _appSummary, _industryType, _redefinedIndustry;
+  bool _appReskinned;
   int _avgMonthlyDownloads;
   DateTime _goLiveDate;
 
@@ -23,6 +22,7 @@ class FormPageState extends State<FormPage> {
         if (value.isEmpty) {
           return 'App name is required';
         }
+        return null;
       },
       onSaved: (String value) {
         _appName = value;
@@ -31,55 +31,83 @@ class FormPageState extends State<FormPage> {
   }
 
   Widget _buildIndustryType() {
-    return DropdownButton(
-        value: selectedValue,
-        hint: Text('IndustryType'),
-        //TODO: Add seperate flie/bean for the data of drop-down menu
-        items: [
-          DropdownMenuItem(
-            child: Text("Male"),
-            value: 1,
-          ),
-          DropdownMenuItem(
-            child: Text("Female"),
-            value: 2,
-          ),
-        ],
-        onChanged: (value) {
-          setState(() {
-            selectedValue = value;
-          });
-        });
+    return DropdownButtonFormField(
+      value: null,
+      hint: Text('Industry Type'),
+
+      //TODO: Add seperate flie/bean for the data of drop-down menu
+      items: [
+        DropdownMenuItem(
+          child: Text("Option 1"),
+          value: 1,
+        ),
+        DropdownMenuItem(
+          child: Text("Option 2"),
+          value: 2,
+        ),
+        DropdownMenuItem(
+          child: Text("Option 3"),
+          value: 3,
+        ),
+      ],
+      onSaved: (int value) {
+        _industryType = value.toString();
+      },
+      onChanged: (int value) {
+        print(value);
+      },
+      validator: (int value) {
+        if (value == null) {
+          return 'Required Field';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildRedefinedIndustry() {
-    return DropdownButton(
-        value: selectedValue,
-        //TODO: Add seperate flie/bean for the data of drop-down menu
-        items: [
-          DropdownMenuItem(
-            child: Text("Male"),
-            value: 1,
-          ),
-          DropdownMenuItem(
-            child: Text("Female"),
-            value: 2,
-          ),
-        ],
-        onChanged: (value) {
-          setState(() {
-            selectedValue = value;
-          });
-        });
+    return DropdownButtonFormField(
+      value: null,
+      hint: Text('Redefine Industry'),
+
+      //TODO: Add seperate flie/bean for the data of drop-down menu
+      items: [
+        DropdownMenuItem(
+          child: Text("Option 1"),
+          value: 1,
+        ),
+        DropdownMenuItem(
+          child: Text("Option 2"),
+          value: 2,
+        ),
+        DropdownMenuItem(
+          child: Text("Option 3"),
+          value: 3,
+        ),
+      ],
+      onSaved: (int value) {
+        _redefinedIndustry = value.toString();
+      },
+      onChanged: (int value) {
+        print(value);
+      },
+      validator: (int value) {
+        if (value == null) {
+          return 'Required Field';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildAppSummary() {
     return TextFormField(
-      decoration: InputDecoration(labelText: 'Briefly descibe your app'),
+      decoration: InputDecoration(labelText: 'Briefly describe your app'),
       validator: (String value) {
         if (value.isEmpty) {
           return 'App summary is required';
         }
+        return null;
       },
       onSaved: (String value) {
         _appSummary = value;
@@ -88,15 +116,57 @@ class FormPageState extends State<FormPage> {
   }
 
   Widget _buildGoLiveDate() {
-    return null;
+    return InputDatePickerFormField(
+      firstDate: DateTime.now(),
+      lastDate: DateTime(3000, 4),
+      onDateSaved: (DateTime date) {
+        _goLiveDate = date;
+      },
+    );
   }
 
   Widget _buildAvgMonthlyDownload() {
-    return null;
+    return DropdownButtonFormField(
+      value: null,
+      hint: Text('Average Monthly Downloads'),
+
+      //TODO: Add seperate flie/bean for the data of drop-down menu
+      items: [
+        DropdownMenuItem(
+          child: Text("1"),
+          value: 1,
+        ),
+        DropdownMenuItem(
+          child: Text("2"),
+          value: 2,
+        ),
+        DropdownMenuItem(
+          child: Text("3"),
+          value: 3,
+        ),
+      ],
+      onSaved: (int value) {
+        _avgMonthlyDownloads = value;
+      },
+      onChanged: (int value) {
+        //TODO: Implement this
+      },
+      validator: (int value) {
+        if (value == null) {
+          return 'Required Field';
+        }
+        return null;
+      },
+    );
   }
 
   Widget _buildAppReskinned() {
-    return null;
+    return Container(
+        child: Column(
+      children: [
+        Text('Is your App reskinned?'),
+      ],
+    ));
   }
 
   @override
@@ -109,31 +179,40 @@ class FormPageState extends State<FormPage> {
           child: Form(
             key: _formkey,
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildAppName(),
                 _buildIndustryType(),
-                // _buildRedefinedIndustry(),
+                _buildRedefinedIndustry(),
                 _buildAppSummary(),
-                // _buildGoLiveDate(),
-                // _buildAvgMonthlyDownload(),
-                // _buildAppReskinned(),
+                _buildGoLiveDate(),
+                _buildAvgMonthlyDownload(),
                 SizedBox(height: 30),
-                ElevatedButton(
-                    onPressed: () {
-                      if (!_formkey.currentState.validate()) {
-                        return;
-                      }
-                      _formkey.currentState.save();
-
-                      print(_appName);
-                      print(selectedValue);
-                      print(_appSummary);
-                    },
-                    child: Text(
-                      'Submit',
-                      style: TextStyle(color: Colors.white),
-                    )),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    _buildAppReskinned(),
+                    ElevatedButton(
+                        onPressed: () {
+                          if (!_formkey.currentState.validate()) {
+                            return;
+                          }
+                          _formkey.currentState.save();
+                          //TODO: Remove below assertion statements during production
+                          print(_appName);
+                          print(_industryType);
+                          print(_redefinedIndustry);
+                          print(_appSummary);
+                          print(_goLiveDate.toString());
+                          print(_avgMonthlyDownloads);
+                          print(_appReskinned);
+                        },
+                        child: Text(
+                          'Next',
+                          style: TextStyle(color: Colors.white, fontSize: 20),
+                        )),
+                  ],
+                ),
               ],
             ),
           ),
