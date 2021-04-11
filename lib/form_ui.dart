@@ -8,6 +8,7 @@ class FormPage extends StatefulWidget {
 }
 
 class FormPageState extends State<FormPage> {
+  int selectedValue = 1;
   String _appName, _appSummary;
   bool appReskinned;
   int _avgMonthlyDownloads;
@@ -30,11 +31,46 @@ class FormPageState extends State<FormPage> {
   }
 
   Widget _buildIndustryType() {
-    return null;
+    return DropdownButton(
+        value: selectedValue,
+        hint: Text('IndustryType'),
+        //TODO: Add seperate flie/bean for the data of drop-down menu
+        items: [
+          DropdownMenuItem(
+            child: Text("Male"),
+            value: 1,
+          ),
+          DropdownMenuItem(
+            child: Text("Female"),
+            value: 2,
+          ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            selectedValue = value;
+          });
+        });
   }
 
   Widget _buildRedefinedIndustry() {
-    return null;
+    return DropdownButton(
+        value: selectedValue,
+        //TODO: Add seperate flie/bean for the data of drop-down menu
+        items: [
+          DropdownMenuItem(
+            child: Text("Male"),
+            value: 1,
+          ),
+          DropdownMenuItem(
+            child: Text("Female"),
+            value: 2,
+          ),
+        ],
+        onChanged: (value) {
+          setState(() {
+            selectedValue = value;
+          });
+        });
   }
 
   Widget _buildAppSummary() {
@@ -46,7 +82,7 @@ class FormPageState extends State<FormPage> {
         }
       },
       onSaved: (String value) {
-        _appName = value;
+        _appSummary = value;
       },
     );
   }
@@ -76,7 +112,7 @@ class FormPageState extends State<FormPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildAppName(),
-                // _buildIndustryType(),
+                _buildIndustryType(),
                 // _buildRedefinedIndustry(),
                 _buildAppSummary(),
                 // _buildGoLiveDate(),
@@ -91,6 +127,7 @@ class FormPageState extends State<FormPage> {
                       _formkey.currentState.save();
 
                       print(_appName);
+                      print(selectedValue);
                       print(_appSummary);
                     },
                     child: Text(
