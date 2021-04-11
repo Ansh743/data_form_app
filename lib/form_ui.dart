@@ -16,7 +16,17 @@ class FormPageState extends State<FormPage> {
   final GlobalKey<FormState> _formkey = GlobalKey<FormState>();
 
   Widget _buildAppName() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Enter your app name'),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'App name is required';
+        }
+      },
+      onSaved: (String value) {
+        _appName = value;
+      },
+    );
   }
 
   Widget _buildIndustryType() {
@@ -28,7 +38,17 @@ class FormPageState extends State<FormPage> {
   }
 
   Widget _buildAppSummary() {
-    return null;
+    return TextFormField(
+      decoration: InputDecoration(labelText: 'Briefly descibe your app'),
+      validator: (String value) {
+        if (value.isEmpty) {
+          return 'App summary is required';
+        }
+      },
+      onSaved: (String value) {
+        _appName = value;
+      },
+    );
   }
 
   Widget _buildGoLiveDate() {
@@ -51,20 +71,27 @@ class FormPageState extends State<FormPage> {
         margin: EdgeInsets.all(24),
         child: Container(
           child: Form(
+            key: _formkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildAppName(),
-                _buildIndustryType(),
-                _buildRedefinedIndustry(),
+                // _buildIndustryType(),
+                // _buildRedefinedIndustry(),
                 _buildAppSummary(),
-                _buildGoLiveDate(),
-                _buildAvgMonthlyDownload(),
-                _buildAppReskinned(),
+                // _buildGoLiveDate(),
+                // _buildAvgMonthlyDownload(),
+                // _buildAppReskinned(),
                 SizedBox(height: 30),
                 ElevatedButton(
                     onPressed: () {
-                      print('Submitted');
+                      if (!_formkey.currentState.validate()) {
+                        return;
+                      }
+                      _formkey.currentState.save();
+
+                      print(_appName);
+                      print(_appSummary);
                     },
                     child: Text(
                       'Submit',
