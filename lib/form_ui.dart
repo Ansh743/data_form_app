@@ -173,19 +173,25 @@ class FormPageState extends State<FormPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(),
-      body: Container(
-        margin: EdgeInsets.all(24),
-        child: Container(
-          child: Form(
+      body: ListView(
+        shrinkWrap: false,
+        padding: EdgeInsets.all(24),
+        children: [
+          Form(
             key: _formkey,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildAppName(),
+                SizedBox(height: 20),
                 _buildIndustryType(),
+                SizedBox(height: 20),
                 _buildRedefinedIndustry(),
+                SizedBox(height: 20),
                 _buildAppSummary(),
+                SizedBox(height: 20),
                 _buildGoLiveDate(),
+                SizedBox(height: 20),
                 _buildAvgMonthlyDownload(),
                 SizedBox(height: 30),
                 Row(
@@ -216,7 +222,7 @@ class FormPageState extends State<FormPage> {
               ],
             ),
           ),
-        ),
+        ],
       ),
     );
   }
